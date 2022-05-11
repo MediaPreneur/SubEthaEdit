@@ -37,9 +37,7 @@ class Option(object):
         self.unsupported = unsupported
 
     def getUnaliasedOption(self):
-        if self.alias:
-            return self.alias.getUnaliasedOption()
-        return self
+        return self.alias.getUnaliasedOption() if self.alias else self
 
     def getRenderName(self):
         return self.getUnaliasedOption().name
@@ -246,9 +244,7 @@ class JoinedValueArg(ValueArg):
         return [self.opt.getRenderName() + self.getValue(args)]
 
     def renderAsInput(self, args):
-        if self.opt.noOptAsInput:
-            return [self.getValue(args)]
-        return self.render(args)
+        return [self.getValue(args)] if self.opt.noOptAsInput else self.render(args)
 
 class SeparateValueArg(ValueArg):
     """SeparateValueArg - A single value argument where the value
@@ -263,9 +259,7 @@ class SeparateValueArg(ValueArg):
         return [self.opt.getRenderName(), self.getValue(args)]
 
     def renderAsInput(self, args):
-        if self.opt.noOptAsInput:
-            return [self.getValue(args)]
-        return self.render(args)
+        return [self.getValue(args)] if self.opt.noOptAsInput else self.render(args)
 
 class MultipleValuesArg(Arg):
     """MultipleValuesArg - An argument with multiple values which
@@ -402,8 +396,7 @@ class ArgList(object):
     def addLastArg(self, output, option):
         """addLastArgs - Extend the given output vector with the last
         instance of a given option."""
-        arg = self.getLastArg(option)
-        if arg:
+        if arg := self.getLastArg(option):
             output.extend(self.render(arg))
 
     def addAllArgs(self, output, option):

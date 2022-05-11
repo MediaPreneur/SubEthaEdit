@@ -32,11 +32,11 @@ lastProtoSelWithTypes = re.sub(r'\s+', ' ', protos[-1][1])
 
 counter = itertools.count(1)
 def replFunc(match):
-    return '%s' % ( match.groups()[0])
+    return f'{match.groups()[0]}'
 
 methodCall = re.sub(r'\([^)]+\)\s*(([A-Za-z0-9_][A-Za-z0-9_]*))', replFunc, lastProtoSelWithTypes)
 
 brackets = needsBracket and ('[', ']') or ('', '')
-outString = '%ssuper %s%s%s' % (brackets[0], methodCall.strip(), brackets[1], postfix)
+outString = f'{brackets[0]}super {methodCall.strip()}{brackets[1]}{postfix}'
 
 sys.stdout.write(outString)
